@@ -1,4 +1,5 @@
 <%@ Page Title="Home - Creation Car Care" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="Home.aspx.cs" Inherits="creation_car_care.Home" %>
+<%@ Register Src="~/Controls/StudioStatBanner.ascx" TagPrefix="uc" TagName="StudioStatBanner" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style>
@@ -11,7 +12,7 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 10px 30px rgba(234, 88, 12, 0.15);
-            margin-bottom: 38px;
+            margin-bottom: 28px;
             position: relative;
             overflow: hidden;
             box-sizing: border-box;
@@ -130,12 +131,12 @@
             background: #fffcf8;
             border: 1.5px solid #ffedd5;
             border-radius: 18px;
-            padding: 28px 24px;
+            padding: 24px;
             box-shadow: 0 4px 15px rgba(234, 88, 12, 0.04);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 190px;
+            min-height: 210px;
             box-sizing: border-box;
             text-decoration: none;
             color: inherit;
@@ -149,17 +150,17 @@
         }
 
         .service-title {
-            font-size: 17px;
+            font-size: 16.5px;
             font-weight: 700;
             color: #111827;
-            margin: 0 0 12px 0;
+            margin: 0 0 10px 0;
         }
 
         .service-desc {
             font-size: 13.5px;
             color: #6b7280;
             line-height: 1.55;
-            margin: 0 0 28px 0;
+            margin: 0 0 20px 0;
         }
 
         .service-price {
@@ -209,47 +210,33 @@
         </div>
     </div>
 
-    <!-- Featured Services Section -->
+    <!-- Reusable ASP.NET Web User Control (Syllabus Section II, Unit 6) -->
+    <uc:StudioStatBanner ID="ucStudioStatBanner" runat="server" />
+
+    <!-- Featured Services Section (Dynamically bound using OOP StudioManager & Collections) -->
     <div class="section-header">
         <h2>Featured Services</h2>
         <a href="ServicesList.aspx" class="view-all-link">View All Services &rarr;</a>
     </div>
 
     <div class="services-grid">
-        <!-- Service 1: PPF (ServiceId: 4) -->
-        <a href="ServiceDetails.aspx?id=4" class="service-card">
-            <div>
-                <h3 class="service-title">Paint Protection (PPF)</h3>
-                <p class="service-desc">Self-healing film to protect your car from scratches and stone chips.</p>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span class="service-price">&#8377;45,000</span>
-                <span style="font-size: 13px; font-weight: bold; color: #ea580c;">View Details &rarr;</span>
-            </div>
-        </a>
-
-        <!-- Service 2: Ceramic Coating (ServiceId: 5) -->
-        <a href="ServiceDetails.aspx?id=5" class="service-card">
-            <div>
-                <h3 class="service-title">Ceramic Coating</h3>
-                <p class="service-desc">Extreme gloss finish with long-lasting hydrophobic protection layer.</p>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span class="service-price">&#8377;12,000</span>
-                <span style="font-size: 13px; font-weight: bold; color: #ea580c;">View Details &rarr;</span>
-            </div>
-        </a>
-
-        <!-- Service 3: Car Washing & Spa (ServiceId: 6) -->
-        <a href="ServiceDetails.aspx?id=6" class="service-card">
-            <div>
-                <h3 class="service-title">Car Washing &amp; Spa</h3>
-                <p class="service-desc">Complete interior vacuuming, foam wash, and dashboard polishing.</p>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span class="service-price">&#8377;599</span>
-                <span style="font-size: 13px; font-weight: bold; color: #ea580c;">View Details &rarr;</span>
-            </div>
-        </a>
+        <asp:Repeater ID="rptFeaturedServices" runat="server">
+            <ItemTemplate>
+                <a href='<%# "ServiceDetails.aspx?id=" + Eval("Id") %>' class="service-card">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                            <span style="font-size: 11px; font-weight: 700; color: #ea580c; background: #ffedd5; padding: 3px 8px; border-radius: 6px; text-transform: uppercase;"><%# Eval("Category") %></span>
+                            <span style="font-size: 12px; font-weight: 700; color: #16a34a;">&#9733; <%# Eval("Rating") %></span>
+                        </div>
+                        <h3 class="service-title"><%# Eval("ServiceName") %></h3>
+                        <p class="service-desc"><%# Eval("ShortDescription") %></p>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #fed7aa; padding-top: 14px; margin-top: auto;">
+                        <span class="service-price">&#8377;<%# string.Format("{0:N0}", Eval("BasePrice")) %></span>
+                        <span style="font-size: 13px; font-weight: bold; color: #ea580c;">View Details &rarr;</span>
+                    </div>
+                </a>
+            </ItemTemplate>
+        </asp:Repeater>
     </div>
 </asp:Content>

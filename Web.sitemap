@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- ASP.NET Site Navigation Map (Syllabus Section II, Unit 6: Navigation Controls) -->
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode url="~/Home.aspx" title="Home" description="Creation Car Care Studio Portal">
+    <siteMapNode url="~/ServicesList.aspx" title="Services" description="Browse Detailing &amp; PPF Packages">
+      <siteMapNode url="~/ServiceDetails.aspx" title="Service Details" description="Specifications &amp; Inclusions" />
+    </siteMapNode>
+    <siteMapNode url="~/BookSlot.aspx" title="Book Slot" description="Select Detailing Date &amp; Time" />
+    <siteMapNode url="~/Booking.aspx" title="My Bookings" description="Customer Detailing Reservations" />
+    <siteMapNode url="~/Tracking.aspx" title="Live Tracking" description="5-Stage Studio Progress Tracker" />
+    <siteMapNode url="~/Offer.aspx" title="Offers &amp; Discounts" description="Promotional Festival Campaigns" />
+    <siteMapNode url="~/Vehicles.aspx" title="My Garage" description="Manage Registered Vehicles">
+      <siteMapNode url="~/AddVehicle.aspx" title="Add Vehicle" description="Register New Car or Bike" />
+    </siteMapNode>
+    <siteMapNode url="~/About.aspx" title="About Studio" description="Studio Infrastructure &amp; Vision" />
+    <siteMapNode url="~/Contact.aspx" title="Contact Us" description="Studio Location &amp; Inquiries" />
+    <siteMapNode url="~/HelpSupport.aspx" title="Help &amp; Support" description="Customer FAQs &amp; Help Desk" />
+    <siteMapNode url="~/Profile.aspx" title="My Profile" description="Account Settings &amp; Preferences">
+      <siteMapNode url="~/EditProfile.aspx" title="Edit Profile" description="Update Personal Information" />
+    </siteMapNode>
+  </siteMapNode>
+</siteMap>

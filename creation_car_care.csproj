@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -112,6 +112,8 @@
     <Content Include="Admin\AddService.aspx" />
     <Content Include="Admin\AddOffer.aspx" />
     <Content Include="Admin\AddCategory.aspx" />
+    <Content Include="Controls\StudioStatBanner.ascx" />
+    <Content Include="Web.sitemap" />
     <Content Include="Global.asax" />
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +125,13 @@
     <Compile Include="Models\ServiceModels.cs" />
     <Compile Include="Models\BookingModels.cs" />
     <Compile Include="Services\StudioManager.cs" />
+    <Compile Include="Controls\StudioStatBanner.ascx.cs">
+      <DependentUpon>StudioStatBanner.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\StudioStatBanner.ascx.designer.cs">
+      <DependentUpon>StudioStatBanner.ascx</DependentUpon>
+    </Compile>
     <Compile Include="About.aspx.cs">
       <DependentUpon>About.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

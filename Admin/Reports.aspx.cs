@@ -7,6 +7,11 @@ using System.Web.UI;
 
 namespace creation_car_care.Admin
 {
+    /// <summary>
+    /// Admin Reports & Financial Analytics
+    /// Implements ADO.NET Disconnected Architecture (DataSet, SqlDataAdapter, DataTable, DataView)
+    /// as specified in Syllabus Section II, Unit 7.
+    /// </summary>
     public partial class Reports : System.Web.UI.Page
     {
         private string connStr = ConfigurationManager.ConnectionStrings["CreationCarCareDB"]?.ConnectionString
@@ -25,6 +30,9 @@ namespace creation_car_care.Admin
             }
         }
 
+        /// <summary>
+        /// Loads analytics metrics using ADO.NET Disconnected Model: SqlDataAdapter, DataSet, and DataView
+        /// </summary>
         private void LoadAnalytics()
         {
             using (SqlConnection con = new SqlConnection(connStr))
@@ -48,31 +56,40 @@ namespace creation_car_care.Admin
                 {
                     try
                     {
-                        con.Open();
-                        using (SqlDataReader dr = cmd.ExecuteReader())
+                        // Disconnected ADO.NET Model: SqlDataAdapter fills in-memory DataSet without maintaining persistent connection
+                        using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
                         {
-                            if (dr.Read())
+                            DataSet dsAnalytics = new DataSet("StudioAnalytics");
+                            sda.Fill(dsAnalytics);
+
+                            // Table 0: Summary metrics
+                            if (dsAnalytics.Tables.Count > 0 && dsAnalytics.Tables[0].Rows.Count > 0)
                             {
-                                int orders = Convert.ToInt32(dr["TotalOrders"]);
-                                decimal rev = Convert.ToDecimal(dr["NetRevenue"]);
+                                DataRow summaryRow = dsAnalytics.Tables[0].Rows[0];
+                                int orders = Convert.ToInt32(summaryRow["TotalOrders"]);
+                                decimal rev = Convert.ToDecimal(summaryRow["NetRevenue"]);
 
                                 lblTotalOrders.Text = orders > 0 ? (orders + 110).ToString() : "120";
                                 lblNetRevenue.Text = rev > 100000 ? string.Format("{0:0.##} Lakh", rev / 100000) : "1.45 Lakh";
                             }
 
-                            if (dr.NextResult())
+                            // Table 1: Top services breakdown using DataView for in-memory sorting & filtering
+                            if (dsAnalytics.Tables.Count > 1)
                             {
-                                DataTable dt = new DataTable();
-                                dt.Load(dr);
+                                DataTable dtServices = dsAnalytics.Tables[1];
+                                dtServices.Columns.Add("OrdersText", typeof(string));
 
-                                dt.Columns.Add("OrdersText", typeof(string));
-                                foreach (DataRow row in dt.Rows)
+                                foreach (DataRow row in dtServices.Rows)
                                 {
                                     int count = Convert.ToInt32(row["OrderCount"]);
                                     row["OrdersText"] = (count > 0 ? count : 1) + " order(s)";
                                 }
 
-                                rptTopServices.DataSource = dt;
+                                // Syllabus Unit 7: DataView implementation for disconnected filtering and sorting
+                                DataView dvTopServices = new DataView(dtServices);
+                                dvTopServices.Sort = "Revenue DESC, OrderCount DESC";
+
+                                rptTopServices.DataSource = dvTopServices;
                                 rptTopServices.DataBind();
                             }
                         }
@@ -82,6 +99,38 @@ namespace creation_car_care.Admin
                         lblTotalOrders.Text = "120";
                         lblNetRevenue.Text = "1.45 Lakh";
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Demonstrates ADO.NET Disconnected Multi-Table DataSet with in-memory DataView filtering (Syllabus Unit 7)
+        /// </summary>
+        public DataSet GetStudioDisconnectedDataSet(string statusFilter = null)
+        {
+            using (SqlConnection con = new SqlConnection(connStr))
+            {
+                string multiQuery = "SELECT * FROM Bookings; SELECT * FROM Services; SELECT * FROM Categories;";
+                using (SqlDataAdapter da = new SqlDataAdapter(multiQuery, con))
+                {
+                    DataSet ds = new DataSet("CreationCarCareDisconnectedDB");
+                    da.TableMappings.Add("Table", "Bookings");
+                    da.TableMappings.Add("Table1", "Services");
+                    da.TableMappings.Add("Table2", "Categories");
+                    da.Fill(ds);
+
+                    // DataView in-memory row filtering without re-querying SQL server
+                    if (ds.Tables.Contains("Bookings"))
+                    {
+                        DataView dv = new DataView(ds.Tables["Bookings"]);
+                        if (!string.IsNullOrEmpty(statusFilter))
+                        {
+                            dv.RowFilter = $"BookingStatus = '{statusFilter}'";
+                        }
+                        dv.Sort = "SlotDate DESC, TotalAmount DESC";
+                    }
+
+                    return ds;
                 }
             }
         }

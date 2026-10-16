@@ -9,9 +9,24 @@
 
 namespace creation_car_care
 {
-
-
     public partial class Home
     {
+        /// <summary>
+        /// ucStudioStatBanner control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::creation_car_care.Controls.StudioStatBanner ucStudioStatBanner;
+
+        /// <summary>
+        /// rptFeaturedServices control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptFeaturedServices;
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace creation_car_care
 {
@@ -10,21 +10,24 @@ namespace creation_car_care
 
         protected void btnRegister_Click(object sender, EventArgs e)
         {
+            // Verify ASP.NET Validation Controls validity
+            if (!Page.IsValid)
+            {
+                return;
+            }
+
             if (string.IsNullOrWhiteSpace(txtFullName.Text) || string.IsNullOrWhiteSpace(txtEmail.Text) || string.IsNullOrWhiteSpace(txtPassword.Text))
             {
-                lblError.Text = "Please fill in all fields!";
+                lblError.Text = "Please fill in all required fields.";
                 return;
             }
 
             try
             {
-                // Save registration details in Session for OTP verification
+                // Save registration details in Session for OTP verification (State Management)
                 Session["RegFullName"] = txtFullName.Text.Trim();
                 Session["RegEmail"] = txtEmail.Text.Trim();
                 Session["RegPassword"] = txtPassword.Text.Trim();
-
-                // If you have a mobile textbox, un-comment the line below:
-                // Session["RegMobile"] = txtMobile.Text.Trim();
 
                 Response.Redirect("VerifyOTP.aspx", false);
                 Context.ApplicationInstance.CompleteRequest();

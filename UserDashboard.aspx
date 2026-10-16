@@ -11,7 +11,7 @@
         </p>
 
         <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
-            <asp:Button ID="btnBook" runat="server" Text="Book Car Service" PostBackUrl="BookService.aspx" style="background: #ff9800; color: white; padding: 12px 25px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;" />
+            <asp:Button ID="btnBook" runat="server" Text="Explore Car Services" PostBackUrl="ServicesList.aspx" style="background: #ff9800; color: white; padding: 12px 25px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;" />
             <asp:Button ID="btnLogout" runat="server" Text="Logout" OnClick="btnLogout_Click" style="background: #dc3545; color: white; padding: 12px 25px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;" />
         </div>
     </div>
