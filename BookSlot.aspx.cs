@@ -53,11 +53,18 @@ namespace creation_car_care
         // User ni registered vehicle fetch karo
         private void LoadVehicleDetails()
         {
+            // If already set in session, use the selected vehicle
+            if (Session["BookingVehicle"] != null && !string.IsNullOrEmpty(Session["BookingVehicle"].ToString()))
+            {
+                lblVehicleDetails.Text = Session["BookingVehicle"].ToString();
+                return;
+            }
+
             int userId = GetCurrentUserId();
 
             using (SqlConnection con = new SqlConnection(connString))
             {
-                string query = "SELECT Brand, ModelName, RegistrationNumber FROM Vehicles WHERE UserId = @UserId";
+                string query = "SELECT TOP 1 Brand, ModelName, RegistrationNumber, IsPrimary FROM Vehicles WHERE UserId = @UserId ORDER BY IsPrimary DESC, VehicleId ASC";
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     cmd.Parameters.AddWithValue("@UserId", userId);
@@ -70,6 +77,9 @@ namespace creation_car_care
                             string reg = reader["RegistrationNumber"].ToString();
                             lblVehicleDetails.Text = string.Format("{0} ({1})", model, reg);
                             Session["BookingVehicle"] = lblVehicleDetails.Text;
+
+                            bool isPrimary = reader["IsPrimary"] != DBNull.Value && Convert.ToBoolean(reader["IsPrimary"]);
+                            lblVehicleBadge.Text = isPrimary ? "● Primary Vehicle" : "● Registered Vehicle";
                         }
                         else
                         {
@@ -80,6 +90,100 @@ namespace creation_car_care
                 }
             }
         }
+
+        #region Vehicle Change Management
+        protected void btnChangeVehicle_Click(object sender, EventArgs e)
+        {
+            LoadUserVehiclesList();
+            pnlVehicleModal.Visible = true;
+            PreserveSlotState();
+        }
+
+        private void LoadUserVehiclesList()
+        {
+            int userId = GetCurrentUserId();
+            DataTable dt = new DataTable();
+
+            using (SqlConnection con = new SqlConnection(connString))
+            {
+                string query = "SELECT VehicleId, VehicleType, Brand, ModelName, RegistrationNumber, IsPrimary, Color FROM Vehicles WHERE UserId = @UserId ORDER BY IsPrimary DESC, VehicleId ASC";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+                    con.Open();
+                    using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                    {
+                        sda.Fill(dt);
+                    }
+                }
+            }
+
+            if (dt.Rows.Count > 0)
+            {
+                rptUserVehicles.DataSource = dt;
+                rptUserVehicles.DataBind();
+                rptUserVehicles.Visible = true;
+                pnlNoGarageVehicles.Visible = false;
+            }
+            else
+            {
+                rptUserVehicles.Visible = false;
+                pnlNoGarageVehicles.Visible = true;
+            }
+        }
+
+        protected void rptUserVehicles_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            if (e.CommandName == "SelectVehicle")
+            {
+                string chosenVehicle = e.CommandArgument.ToString();
+                SetSelectedVehicle(chosenVehicle);
+                pnlVehicleModal.Visible = false;
+                PreserveSlotState();
+            }
+        }
+
+        protected void btnApplyCustomVehicle_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtCustomVehicle.Text))
+            {
+                SetSelectedVehicle(txtCustomVehicle.Text.Trim());
+                txtCustomVehicle.Text = "";
+                pnlVehicleModal.Visible = false;
+                PreserveSlotState();
+            }
+        }
+
+        protected void btnCloseVehicleModal_Click(object sender, EventArgs e)
+        {
+            pnlVehicleModal.Visible = false;
+            PreserveSlotState();
+        }
+
+        protected void btnCloseVehMsg_Click(object sender, EventArgs e)
+        {
+            pnlVehicleSuccessMsg.Visible = false;
+            PreserveSlotState();
+        }
+
+        private void SetSelectedVehicle(string vehicle)
+        {
+            lblVehicleDetails.Text = vehicle;
+            Session["BookingVehicle"] = vehicle;
+            lblVehicleBadge.Text = "● Selected for this Booking";
+            lblVehicleBadge.ForeColor = System.Drawing.ColorTranslator.FromHtml("#ea580c");
+
+            pnlVehicleSuccessMsg.Visible = true;
+            lblVehicleSuccessMsg.Text = "Vehicle changed successfully to: " + vehicle;
+        }
+
+        private void PreserveSlotState()
+        {
+            GenerateDateList();
+            UpdateSummaryDisplay();
+            HighlightActiveSlotButton(hfSelectedTime.Value);
+        }
+        #endregion
 
         // Cart mathi total items ane price load karo
         private void LoadCartSummary()

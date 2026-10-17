@@ -57,11 +57,12 @@
             border: 1.5px solid #ffedd5;
             border-radius: 16px;
             padding: 20px 24px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 10px rgba(234, 88, 12, 0.03);
+            transition: border-color 0.2s;
         }
         .vehicle-subtitle {
             font-size: 11px;
@@ -85,6 +86,183 @@
             align-items: center;
             gap: 4px;
         }
+        .btn-change-veh {
+            color: #ea580c;
+            font-size: 13px;
+            font-weight: 800;
+            text-decoration: none;
+            background: #fff7ed;
+            border: 1.5px solid #fed7aa;
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn-change-veh:hover {
+            background: #ea580c;
+            color: #ffffff;
+            border-color: #ea580c;
+            box-shadow: 0 4px 12px rgba(234, 88, 12, 0.2);
+        }
+
+        /* Success Message Box */
+        .veh-alert-box {
+            background: #f0fdf4;
+            border: 1.5px solid #bbf7d0;
+            color: #166534;
+            padding: 12px 18px;
+            border-radius: 12px;
+            margin-bottom: 22px;
+            font-size: 13.5px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Modal Styles */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.65);
+            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .modal-dialog {
+            background: #ffffff;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 540px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            animation: modalSlideIn 0.22s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            background: #fffcf8;
+            border-bottom: 1.5px solid #ffedd5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #111827;
+            margin: 0;
+        }
+
+        .modal-close-btn {
+            background: transparent;
+            border: none;
+            font-size: 26px;
+            color: #9ca3af;
+            cursor: pointer;
+            line-height: 1;
+            padding: 4px;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .modal-close-btn:hover {
+            color: #ea580c;
+        }
+
+        .modal-body {
+            padding: 24px;
+            max-height: 65vh;
+            overflow-y: auto;
+        }
+
+        .veh-option-card {
+            background: #ffffff;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .veh-option-card:hover {
+            border-color: #ea580c;
+            background: #fffcf8;
+        }
+
+        .veh-card-name {
+            font-size: 15px;
+            font-weight: 800;
+            color: #111827;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .veh-card-plate {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #374151;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-select-veh {
+            background: #ea580c;
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-select-veh:hover {
+            background: #c2410c;
+        }
+
+        .custom-veh-box {
+            margin-top: 18px;
+            padding-top: 18px;
+            border-top: 1px dashed #fed7aa;
+        }
+
         /* Date Section */
         .section-title {
             font-size: 15px;
@@ -262,6 +440,12 @@
             <a href="Cart.aspx" class="btn-back">&larr; Back to Cart</a>
         </div>
 
+        <!-- Vehicle Updated Notification Alert -->
+        <asp:Panel ID="pnlVehicleSuccessMsg" runat="server" Visible="false" CssClass="veh-alert-box">
+            <span>&#10004; <asp:Label ID="lblVehicleSuccessMsg" runat="server"></asp:Label></span>
+            <asp:LinkButton ID="btnCloseVehMsg" runat="server" OnClick="btnCloseVehMsg_Click" style="color: #166534; text-decoration: none; font-size: 18px; font-weight: bold; line-height: 1;">&times;</asp:LinkButton>
+        </asp:Panel>
+
         <div class="slot-layout">
             
             <!-- Left Side Controls -->
@@ -270,16 +454,19 @@
                 <!-- Registered Vehicle Card -->
                 <div class="vehicle-box">
                     <div>
-                        <div class="vehicle-subtitle">REGISTERED VEHICLE</div>
+                        <div class="vehicle-subtitle">SELECTED VEHICLE FOR SERVICE</div>
                         <div class="vehicle-title">
                             <asp:Label ID="lblVehicleDetails" runat="server" Text="Hyundai Creta (GJ 03 AB 1234)"></asp:Label>
                         </div>
-                        <div class="vehicle-badge">
-                            &#9679; Primary Vehicle
+                        <div>
+                            <asp:Label ID="lblVehicleBadge" runat="server" CssClass="vehicle-badge" Text="&#9679; Primary Vehicle"></asp:Label>
                         </div>
                     </div>
                     <div>
-                        <a href="Profile.aspx" style="color: #ea580c; font-size: 13px; font-weight: 700; text-decoration: none;">Change &rarr;</a>
+                        <!-- Change Vehicle Trigger Button -->
+                        <asp:LinkButton ID="btnChangeVehicle" runat="server" OnClick="btnChangeVehicle_Click" CssClass="btn-change-veh">
+                            Change Vehicle &rarr;
+                        </asp:LinkButton>
                     </div>
                 </div>
 
@@ -363,4 +550,77 @@
         </div>
 
     </div>
+
+    <!-- Vehicle Selection Modal Dialog -->
+    <asp:Panel ID="pnlVehicleModal" runat="server" Visible="false" CssClass="modal-backdrop">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <div>
+                    <h3 class="modal-title">Select Vehicle for Detailing</h3>
+                    <p style="margin: 4px 0 0 0; font-size: 12.5px; color: #6b7280;">Choose from your registered vehicles or enter another vehicle</p>
+                </div>
+                <asp:LinkButton ID="btnCloseVehicleModal" runat="server" OnClick="btnCloseVehicleModal_Click" CssClass="modal-close-btn">&times;</asp:LinkButton>
+            </div>
+            <div class="modal-body">
+                
+                <!-- User's Existing Vehicles from Garage -->
+                <div style="font-size: 12px; font-weight: 800; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 12px;">
+                    YOUR REGISTERED VEHICLES
+                </div>
+
+                <asp:Repeater ID="rptUserVehicles" runat="server" OnItemCommand="rptUserVehicles_ItemCommand">
+                    <ItemTemplate>
+                        <div class="veh-option-card">
+                            <div>
+                                <div class="veh-card-name">
+                                    <%# Eval("Brand") %> <%# Eval("ModelName") %>
+                                    <%# Convert.ToBoolean(Eval("IsPrimary")) ? "<span style='font-size: 10px; background: #dcfce7; color: #15803d; font-weight: bold; padding: 2px 6px; border-radius: 4px; margin-left: 6px;'>PRIMARY</span>" : "" %>
+                                </div>
+                                <div style="display: flex; gap: 8px; align-items: center; margin-top: 4px;">
+                                    <span class="veh-card-plate">
+                                        <span style="font-size: 9px; color: #ea580c; font-weight: 900;">IND</span>
+                                        <%# Eval("RegistrationNumber") %>
+                                    </span>
+                                    <span style="font-size: 11px; color: #6b7280; font-weight: 600;">
+                                        <%# Eval("VehicleType") %> &bull; <%# Eval("Color") %>
+                                    </span>
+                                </div>
+                            </div>
+                            <div>
+                                <asp:Button ID="btnSelectThisVehicle" runat="server" Text="Select" 
+                                    CommandName="SelectVehicle" 
+                                    CommandArgument='<%# Eval("ModelName") + " (" + Eval("RegistrationNumber") + ")" %>' 
+                                    CssClass="btn-select-veh" />
+                            </div>
+                        </div>
+                    </ItemTemplate>
+                </asp:Repeater>
+
+                <!-- Fallback if no vehicles in garage -->
+                <asp:Panel ID="pnlNoGarageVehicles" runat="server" Visible="false" style="text-align: center; padding: 20px; background: #fffcf8; border: 1px dashed #fed7aa; border-radius: 12px; margin-bottom: 16px;">
+                    <p style="margin: 0 0 6px 0; font-weight: 700; color: #374151; font-size: 14px;">No vehicles found in your garage.</p>
+                    <p style="margin: 0; font-size: 12.5px; color: #6b7280;">You can enter your vehicle details below.</p>
+                </asp:Panel>
+
+                <!-- Quick Custom Vehicle Input Section -->
+                <div class="custom-veh-box">
+                    <div style="font-size: 12px; font-weight: 800; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px;">
+                        OR ENTER ANOTHER VEHICLE
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <asp:TextBox ID="txtCustomVehicle" runat="server" placeholder="e.g. Honda City (GJ 03 XY 5678)" style="flex: 1; padding: 10px 14px; border: 1.5px solid #d1d5db; border-radius: 8px; font-size: 13px; outline: none;"></asp:TextBox>
+                        <asp:Button ID="btnApplyCustomVehicle" runat="server" Text="Apply" OnClick="btnApplyCustomVehicle_Click" CssClass="btn-select-veh" style="padding: 10px 18px;" />
+                    </div>
+                </div>
+
+                <!-- Manage Garage Link -->
+                <div style="margin-top: 18px; text-align: center;">
+                    <a href="Vehicles.aspx" style="color: #ea580c; font-size: 12.5px; font-weight: 700; text-decoration: none;">
+                        + Manage or Add Vehicles in Garage &rarr;
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </asp:Panel>
 </asp:Content>
