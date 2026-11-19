@@ -43,6 +43,10 @@ namespace creation_car_care
         protected global::System.Web.UI.WebControls.Label lblServiceName;
         protected global::System.Web.UI.WebControls.Label lblRating;
         protected global::System.Web.UI.WebControls.Label lblCategory;
+        protected global::System.Web.UI.WebControls.Label lblAvgRatingHeader;
+        protected global::System.Web.UI.WebControls.Label lblTotalReviewsCount;
+        protected global::System.Web.UI.WebControls.Repeater rptReviews;
+        protected global::System.Web.UI.WebControls.Panel pnlNoReviews;
 
         /// <summary>
         /// lblDescription control.

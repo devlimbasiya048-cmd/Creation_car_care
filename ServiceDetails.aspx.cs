@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace creation_car_care
@@ -78,6 +79,82 @@ namespace creation_car_care
                     }
                 }
             }
+
+            LoadCustomerReviews(id);
+        }
+
+        private void LoadCustomerReviews(string serviceId)
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection con = new SqlConnection(connString))
+            {
+                string sql = @"
+                    SELECT b.BookingId, b.Rating, b.ReviewText, b.SlotDate,
+                           ISNULL(u.FullName, 'Customer') AS CustomerName,
+                           u.ProfileImage
+                    FROM Bookings b
+                    LEFT JOIN Users u ON b.UserId = u.UserId
+                    WHERE b.ServiceId = @ServiceId AND b.Rating IS NOT NULL
+                    ORDER BY b.SlotDate DESC, b.BookingId DESC";
+
+                using (SqlCommand cmd = new SqlCommand(sql, con))
+                {
+                    cmd.Parameters.AddWithValue("@ServiceId", serviceId);
+                    try
+                    {
+                        con.Open();
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            da.Fill(dt);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        // Fallback gracefully
+                    }
+                }
+            }
+
+            if (dt.Rows.Count > 0)
+            {
+                pnlNoReviews.Visible = false;
+                rptReviews.Visible = true;
+                rptReviews.DataSource = dt;
+                rptReviews.DataBind();
+
+                double totalRating = 0;
+                foreach (DataRow row in dt.Rows)
+                {
+                    totalRating += Convert.ToDouble(row["Rating"]);
+                }
+                double avg = totalRating / dt.Rows.Count;
+                lblAvgRatingHeader.Text = avg.ToString("0.0");
+                lblRating.Text = avg.ToString("0.0");
+                lblTotalReviewsCount.Text = dt.Rows.Count.ToString();
+            }
+            else
+            {
+                pnlNoReviews.Visible = true;
+                rptReviews.Visible = false;
+                lblAvgRatingHeader.Text = "4.8";
+                lblTotalReviewsCount.Text = "0";
+            }
+        }
+
+        public string GetStarsHtml(object ratingObj)
+        {
+            if (ratingObj == null || ratingObj == DBNull.Value) return "";
+            int rating = Convert.ToInt32(ratingObj);
+            string stars = "";
+            for (int i = 0; i < rating; i++) stars += "&#9733;";
+            for (int i = rating; i < 5; i++) stars += "&#9734;";
+            return stars;
+        }
+
+        public string GetAvatarInitial(string name)
+        {
+            if (string.IsNullOrEmpty(name)) return "U";
+            return name.Trim().Substring(0, 1).ToUpper();
         }
 
         protected void btnBook_Click(object sender, EventArgs e)

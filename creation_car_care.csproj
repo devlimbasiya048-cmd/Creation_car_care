@@ -74,6 +74,7 @@
     <Content Include="BookSlot.aspx" />
     <Content Include="Cart.aspx" />
     <Content Include="Contact.aspx" />
+    <Content Include="ChangePassword.aspx" />
     <Content Include="EditProfile.aspx" />
     <Content Include="HelpSupport.aspx" />
     <Content Include="Vehicles.aspx" />
@@ -145,6 +146,13 @@
     </Compile>
     <Compile Include="AddVehicle.aspx.designer.cs">
       <DependentUpon>AddVehicle.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ChangePassword.aspx.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ChangePassword.aspx.designer.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
     </Compile>
     <Compile Include="EditProfile.aspx.cs">
       <DependentUpon>EditProfile.aspx</DependentUpon>

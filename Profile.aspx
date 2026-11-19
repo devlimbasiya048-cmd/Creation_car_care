@@ -363,6 +363,16 @@
                 <div class="hub-card-arrow">&rarr;</div>
             </a>
 
+            <!-- Change Password & Security -->
+            <a href="ChangePassword.aspx" class="hub-card">
+                <div class="hub-card-icon">&#128274;</div>
+                <div class="hub-card-content">
+                    <h3>Change Password</h3>
+                    <p>Update your login credentials and enhance your account protection.</p>
+                </div>
+                <div class="hub-card-arrow">&rarr;</div>
+            </a>
+
             <!-- Studio Services -->
             <a href="ServicesList.aspx" class="hub-card">
                 <div class="hub-card-icon">&#11088;</div>

@@ -192,7 +192,7 @@
                 </label>
 
                 <label for="<%= fuProfilePic.ClientID %>" class="upload-text" title="Click to choose a photo">
-                    Click Camera to Change Photo
+                  
                 </label>
             </div>
 
@@ -223,6 +223,20 @@
                 <div class="form-group">
                     <label class="form-label">Email Address (Registered)</label>
                     <asp:TextBox ID="txtEmail" runat="server" CssClass="form-input" ReadOnly="true" style="background: #f8fafc; color: #64748b;"></asp:TextBox>
+                </div>
+
+                <!-- Account Security Shortcut -->
+                <div style="background: #fff7ed; border: 1.5px solid #fed7aa; border-radius: 10px; padding: 12px 16px; margin-top: 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 20px;">&#128274;</span>
+                        <div>
+                            <div style="font-size: 13px; font-weight: 800; color: #9a3412;">Account Security</div>
+                            <div style="font-size: 11.5px; color: #c2410c;">Want to update your password?</div>
+                        </div>
+                    </div>
+                    <a href="ChangePassword.aspx" style="background: #ffffff; color: #ea580c; border: 1.5px solid #ea580c; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 800; text-decoration: none; transition: all 0.2s; white-space: nowrap;">
+                        Change Password &rarr;
+                    </a>
                 </div>
             </div>
 
