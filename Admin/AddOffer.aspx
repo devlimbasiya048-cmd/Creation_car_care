@@ -1,4 +1,4 @@
-<%@ Page Title="Add New Offer" Language="C#" MasterPageFile="~/Admin/Admin.Master" AutoEventWireup="true" CodeBehind="AddOffer.aspx.cs" Inherits="creation_car_care.Admin.AddOffer" %>
+<%@ Page Title="Manage Offer" Language="C#" MasterPageFile="~/Admin/Admin.Master" AutoEventWireup="true" CodeBehind="AddOffer.aspx.cs" Inherits="creation_car_care.Admin.AddOffer" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style>
@@ -15,7 +15,7 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
         }
 
-        /* Orange Banner Header (Exact Match Image 1 Frame 4) */
+        /* Orange Banner Header */
         .offer-header-banner {
             background: linear-gradient(135deg, #ea580c, #f97316);
             color: #ffffff;
@@ -117,7 +117,7 @@
             <!-- Orange Banner Header -->
             <div class="offer-header-banner">
                 <a href="ManageOffers.aspx" class="banner-back-arrow">&larr;</a>
-                <h3>Add New Offer</h3>
+                <h3><asp:Label ID="lblPageHeading" runat="server" Text="Add New Offer"></asp:Label></h3>
             </div>
 
             <div class="form-body-wrapper">
@@ -143,13 +143,13 @@
                 <!-- DISCOUNT VALUE -->
                 <div class="form-group">
                     <label class="form-label">DISCOUNT VALUE *</label>
-                    <asp:TextBox ID="txtDiscountValue" runat="server" CssClass="form-control" Placeholder="e.g. 20% OFF or ₹500 OFF"></asp:TextBox>
+                    <asp:TextBox ID="txtDiscountValue" runat="server" CssClass="form-control" Placeholder="e.g. 20% or 25%"></asp:TextBox>
                 </div>
 
                 <!-- OFFER VALIDITY / DESCRIPTION -->
                 <div class="form-group">
                     <label class="form-label">OFFER VALIDITY / DESCRIPTION *</label>
-                    <asp:TextBox ID="txtOfferDesc" runat="server" TextMode="MultiLine" Rows="3" CssClass="form-control" Placeholder="e.g. Valid on all sedan & SUV vehicles until 31st Oct. Minimum spend ₹3,000 required."></asp:TextBox>
+                    <asp:TextBox ID="txtOfferDesc" runat="server" TextMode="MultiLine" Rows="3" CssClass="form-control" Placeholder="e.g. Valid on all sedan & SUV vehicles until 31st Dec. Minimum spend ₹3,000 required."></asp:TextBox>
                 </div>
 
                 <!-- Submit Button -->

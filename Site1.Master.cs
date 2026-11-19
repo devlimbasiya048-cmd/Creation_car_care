@@ -44,21 +44,34 @@ namespace creation_car_care
             if (phGuestNav != null) phGuestNav.Visible = !isLoggedIn;
             if (hlAdminPanel != null) hlAdminPanel.Visible = isAdmin;
 
-            if (isLoggedIn && lblAvatar != null)
+            if (isLoggedIn)
             {
-                string userName = Session["UserName"] != null ? Session["UserName"].ToString() : "";
-                if (string.IsNullOrEmpty(userName) && Session["UserEmail"] != null)
+                string userImg = Session["UserProfileImage"] != null ? Session["UserProfileImage"].ToString() : null;
+                if (!string.IsNullOrEmpty(userImg) && imgNavAvatar != null)
                 {
-                    userName = Session["UserEmail"].ToString();
+                    imgNavAvatar.ImageUrl = ResolveUrl(userImg);
+                    imgNavAvatar.Visible = true;
+                    if (lblAvatar != null) lblAvatar.Visible = false;
                 }
+                else if (lblAvatar != null)
+                {
+                    if (imgNavAvatar != null) imgNavAvatar.Visible = false;
+                    lblAvatar.Visible = true;
 
-                if (!string.IsNullOrEmpty(userName))
-                {
-                    lblAvatar.Text = userName.Trim().Substring(0, 1).ToUpper();
-                }
-                else
-                {
-                    lblAvatar.Text = "U";
+                    string userName = Session["UserName"] != null ? Session["UserName"].ToString() : "";
+                    if (string.IsNullOrEmpty(userName) && Session["UserEmail"] != null)
+                    {
+                        userName = Session["UserEmail"].ToString();
+                    }
+
+                    if (!string.IsNullOrEmpty(userName))
+                    {
+                        lblAvatar.Text = userName.Trim().Substring(0, 1).ToUpper();
+                    }
+                    else
+                    {
+                        lblAvatar.Text = "U";
+                    }
                 }
             }
         }

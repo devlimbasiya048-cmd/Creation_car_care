@@ -7,7 +7,7 @@
             margin: 0 auto;
         }
 
-        /* Top Action Button (Exact Match Image 1 Frame 3) */
+        /* Top Action Button */
         .btn-add-offer-nav {
             background: #111827;
             color: #ffffff;
@@ -39,7 +39,7 @@
             margin-bottom: 16px;
         }
 
-        /* Offer Card (Exact Match Image 1 Frame 3) */
+        /* Offer Card */
         .offers-list {
             display: flex;
             flex-direction: column;
@@ -120,7 +120,31 @@
         .offer-card-right {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
+        }
+
+        /* Edit Button */
+        .btn-edit-offer {
+            background: #fff7ed;
+            color: #ea580c;
+            border: 1.5px solid #fed7aa;
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 800;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-edit-offer:hover {
+            background: #ea580c;
+            color: #ffffff;
+            border-color: #ea580c;
+            box-shadow: 0 2px 8px rgba(234, 88, 12, 0.2);
         }
 
         /* Toggle Button */
@@ -152,10 +176,19 @@
 
         .btn-delete-offer {
             color: #ef4444;
-            font-size: 15px;
-            padding: 6px;
+            font-size: 16px;
+            padding: 6px 8px;
             text-decoration: none;
             cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-delete-offer:hover {
+            background: #fee2e2;
         }
     </style>
 </asp:Content>
@@ -163,7 +196,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="offers-mgmt-container">
         
-        <!-- Add New Offer Button (Exact Match Image 1 Frame 3) -->
+        <!-- Add New Offer Button -->
         <a href="AddOffer.aspx" class="btn-add-offer-nav">
             <span>&#43;</span> Add New Offer
         </a>
@@ -193,6 +226,11 @@
                     </div>
 
                     <div class="offer-card-right">
+                        <!-- Edit Button (Added as requested) -->
+                        <a href='<%# "AddOffer.aspx?id=" + Eval("OfferId") %>' class="btn-edit-offer" title="Edit Offer">
+                            &#9998; Edit
+                        </a>
+
                         <!-- Toggle Switch -->
                         <asp:LinkButton ID="btnToggleActive" runat="server" 
                             CommandName="ToggleOffer" 

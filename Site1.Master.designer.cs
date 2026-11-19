@@ -50,6 +50,7 @@ namespace creation_car_care
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder phUserNav;
         protected global::System.Web.UI.WebControls.HyperLink hlAdminPanel;
+        protected global::System.Web.UI.WebControls.Image imgNavAvatar;
         protected global::System.Web.UI.WebControls.Label lblAvatar;
 
         /// <summary>

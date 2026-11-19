@@ -47,7 +47,7 @@ namespace creation_car_care
                     con.Open();
 
                     // 1. First check in Customer Users table
-                    string userQry = "SELECT UserId, FullName, Email, ISNULL(IsBlocked, 0) AS IsBlocked FROM Users WHERE (Email = @User OR MobileNumber = @User) AND Password = @Pass";
+                    string userQry = "SELECT UserId, FullName, Email, ISNULL(IsBlocked, 0) AS IsBlocked, ProfileImage FROM Users WHERE (Email = @User OR MobileNumber = @User) AND Password = @Pass";
                     using (SqlCommand cmd = new SqlCommand(userQry, con))
                     {
                         cmd.Parameters.AddWithValue("@User", userInput);
@@ -73,6 +73,11 @@ namespace creation_car_care
                                 Session["UserEmail"] = email;
                                 Session["UserName"] = !string.IsNullOrEmpty(fullName) ? fullName : email;
                                 Session["IsAdmin"] = false;
+
+                                if (reader["ProfileImage"] != DBNull.Value && !string.IsNullOrEmpty(reader["ProfileImage"].ToString()))
+                                {
+                                    Session["UserProfileImage"] = reader["ProfileImage"].ToString();
+                                }
 
                                 // Client-Side State Management: Save persistent cookie
                                 HttpCookie remCookie = new HttpCookie("CCC_RememberUser", email)

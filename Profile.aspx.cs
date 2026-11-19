@@ -37,7 +37,7 @@ namespace creation_car_care
                 con.Open();
 
                 // 1. Fetch User Information
-                string userQry = "SELECT FullName, Email, MobileNumber FROM Users WHERE UserId = @UserId";
+                string userQry = "SELECT FullName, Email, MobileNumber, ProfileImage FROM Users WHERE UserId = @UserId";
                 using (SqlCommand cmd = new SqlCommand(userQry, con))
                 {
                     cmd.Parameters.AddWithValue("@UserId", userId);
@@ -48,14 +48,26 @@ namespace creation_car_care
                             string fullName = r["FullName"] != DBNull.Value ? r["FullName"].ToString() : "Customer";
                             string email = r["Email"] != DBNull.Value ? r["Email"].ToString() : "";
                             string mobile = r["MobileNumber"] != DBNull.Value ? r["MobileNumber"].ToString() : "+91 98765 43210";
+                            string profileImg = r["ProfileImage"] != DBNull.Value ? r["ProfileImage"].ToString() : "";
 
                             lblFullName.Text = fullName;
                             lblEmail.Text = email;
                             lblMobile.Text = mobile;
 
-                            if (!string.IsNullOrEmpty(fullName))
+                            if (!string.IsNullOrEmpty(profileImg))
                             {
-                                lblAvatarInitial.Text = fullName.Trim().Substring(0, 1).ToUpper();
+                                imgProfilePic.ImageUrl = ResolveUrl(profileImg);
+                                imgProfilePic.Visible = true;
+                                lblAvatarInitial.Visible = false;
+                            }
+                            else
+                            {
+                                imgProfilePic.Visible = false;
+                                lblAvatarInitial.Visible = true;
+                                if (!string.IsNullOrEmpty(fullName))
+                                {
+                                    lblAvatarInitial.Text = fullName.Trim().Substring(0, 1).ToUpper();
+                                }
                             }
                         }
                     }

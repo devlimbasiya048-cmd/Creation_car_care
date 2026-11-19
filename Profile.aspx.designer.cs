@@ -8,6 +8,7 @@ namespace creation_car_care
 {
     public partial class Profile
     {
+        protected global::System.Web.UI.WebControls.Image imgProfilePic;
         protected global::System.Web.UI.WebControls.Label lblAvatarInitial;
         protected global::System.Web.UI.WebControls.Label lblFullName;
         protected global::System.Web.UI.WebControls.Label lblEmail;

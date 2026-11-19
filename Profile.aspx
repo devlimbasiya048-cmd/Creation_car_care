@@ -261,7 +261,8 @@
         <!-- Profile Hero Card -->
         <div class="profile-hero-card">
             <div class="hero-left-info">
-                <div class="profile-avatar-circle">
+                <div class="profile-avatar-circle" style="overflow: hidden; padding: 0;">
+                    <asp:Image ID="imgProfilePic" runat="server" Visible="false" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block;" />
                     <asp:Label ID="lblAvatarInitial" runat="server" Text="U"></asp:Label>
                 </div>
                 <div class="hero-text">

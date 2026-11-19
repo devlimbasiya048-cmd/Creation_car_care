@@ -15,6 +15,12 @@ namespace creation_car_care
                 return;
             }
 
+            // Ensure form supports multipart file uploads for avatar image
+            if (Page.Form != null)
+            {
+                Page.Form.Enctype = "multipart/form-data";
+            }
+
             if (!IsPostBack)
             {
                 LoadData();
@@ -33,7 +39,7 @@ namespace creation_car_care
 
             using (SqlConnection con = new SqlConnection(connString))
             {
-                string query = "SELECT FullName, Email, MobileNumber FROM Users WHERE UserId = @UserId";
+                string query = "SELECT FullName, Email, MobileNumber, ProfileImage FROM Users WHERE UserId = @UserId";
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     cmd.Parameters.AddWithValue("@UserId", userId);
@@ -47,8 +53,17 @@ namespace creation_car_care
                             txtEmail.Text = r["Email"] != DBNull.Value ? r["Email"].ToString() : "";
                             txtMobile.Text = r["MobileNumber"] != DBNull.Value ? r["MobileNumber"].ToString() : "+91 98765 43210";
 
-                            if (!string.IsNullOrEmpty(name))
+                            string profileImg = r["ProfileImage"] != DBNull.Value ? r["ProfileImage"].ToString() : "";
+                            if (!string.IsNullOrEmpty(profileImg))
                             {
+                                imgProfilePreview.ImageUrl = ResolveUrl(profileImg);
+                                imgProfilePreview.Visible = true;
+                                lblAvatarInitial.Visible = false;
+                            }
+                            else if (!string.IsNullOrEmpty(name))
+                            {
+                                imgProfilePreview.Visible = false;
+                                lblAvatarInitial.Visible = true;
                                 lblAvatarInitial.Text = name.Trim().Substring(0, 1).ToUpper();
                             }
                         }
@@ -62,15 +77,58 @@ namespace creation_car_care
             int userId = GetCurrentUserId();
             string fullName = txtFullName.Text.Trim();
             string mobile = txtMobile.Text.Trim();
+            string profileImagePath = null;
+
+            // Handle Profile Image Upload via Camera Icon Trigger
+            if (fuProfilePic.HasFile)
+            {
+                string ext = System.IO.Path.GetExtension(fuProfilePic.FileName).ToLower();
+                if (ext == ".jpg" || ext == ".jpeg" || ext == ".png" || ext == ".webp")
+                {
+                    try
+                    {
+                        string folderPath = Server.MapPath("~/Images/Users/");
+                        if (!System.IO.Directory.Exists(folderPath))
+                        {
+                            System.IO.Directory.CreateDirectory(folderPath);
+                        }
+
+                        string fileName = $"user_{userId}_{DateTime.Now:yyyyMMddHHmmss}{ext}";
+                        string fullSavePath = System.IO.Path.Combine(folderPath, fileName);
+                        fuProfilePic.SaveAs(fullSavePath);
+
+                        profileImagePath = "~/Images/Users/" + fileName;
+                        Session["UserProfileImage"] = profileImagePath;
+                    }
+                    catch (Exception)
+                    {
+                        // Fallback gracefully
+                    }
+                }
+            }
 
             using (SqlConnection con = new SqlConnection(connString))
             {
-                string updateQry = "UPDATE Users SET FullName = @FullName, MobileNumber = @Mobile WHERE UserId = @UserId";
+                string updateQry;
+                if (!string.IsNullOrEmpty(profileImagePath))
+                {
+                    updateQry = "UPDATE Users SET FullName = @FullName, MobileNumber = @Mobile, ProfileImage = @ProfileImage WHERE UserId = @UserId";
+                }
+                else
+                {
+                    updateQry = "UPDATE Users SET FullName = @FullName, MobileNumber = @Mobile WHERE UserId = @UserId";
+                }
+
                 using (SqlCommand cmd = new SqlCommand(updateQry, con))
                 {
                     cmd.Parameters.AddWithValue("@FullName", fullName);
                     cmd.Parameters.AddWithValue("@Mobile", mobile);
                     cmd.Parameters.AddWithValue("@UserId", userId);
+                    if (!string.IsNullOrEmpty(profileImagePath))
+                    {
+                        cmd.Parameters.AddWithValue("@ProfileImage", profileImagePath);
+                    }
+
                     con.Open();
                     cmd.ExecuteNonQuery();
                 }
@@ -79,9 +137,16 @@ namespace creation_car_care
             Session["UserName"] = fullName;
 
             lblSuccess.Visible = true;
-            lblSuccess.Text = "Profile updated successfully!";
+            lblSuccess.Text = "Profile details & photo updated successfully!";
 
-            if (!string.IsNullOrEmpty(fullName))
+            // Update UI preview
+            if (!string.IsNullOrEmpty(profileImagePath))
+            {
+                imgProfilePreview.ImageUrl = ResolveUrl(profileImagePath);
+                imgProfilePreview.Visible = true;
+                lblAvatarInitial.Visible = false;
+            }
+            else if (!string.IsNullOrEmpty(fullName))
             {
                 lblAvatarInitial.Text = fullName.Trim().Substring(0, 1).ToUpper();
             }

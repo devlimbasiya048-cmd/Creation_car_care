@@ -403,7 +403,8 @@
                         <asp:HyperLink ID="hlAdminPanel" runat="server" NavigateUrl="~/Admin/Dashboard.aspx" Visible="false" style="color: #b91c1c; font-weight: 800; background: #fee2e2; padding: 6px 12px; border-radius: 6px; text-decoration: none;">&#9881; Admin</asp:HyperLink>
 
                         <a href="Profile.aspx" class="profile-btn">
-                            <span class="avatar-circle">
+                            <span class="avatar-circle" style="overflow: hidden; padding: 0;">
+                                <asp:Image ID="imgNavAvatar" runat="server" Visible="false" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block;" />
                                 <asp:Label ID="lblAvatar" runat="server" Text="D"></asp:Label>
                             </span>
                             <span>Profile</span>
