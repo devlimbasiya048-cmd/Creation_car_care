@@ -207,6 +207,7 @@ namespace creation_car_care.Services
             _promoDiscountRates["DIWALI25"] = 25.0m;
             _promoDiscountRates["STUDIO10"] = 10.0m;
             _promoDiscountRates["FESTIVE15"] = 15.0m;
+            _promoDiscountRates["WINTER20"] = 20.0m;
         }
 
         private void InitializeBayQueue()

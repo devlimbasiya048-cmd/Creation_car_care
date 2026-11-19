@@ -140,6 +140,7 @@ SET IDENTITY_INSERT [dbo].[Offers] ON;
 GO
 INSERT INTO [dbo].[Offers] ([OfferId], [DiscountPercentage], [OfferTitle], [OfferDescription], [StartDate], [EndDate], [ValidityText], [PromoCode], [IsActive]) VALUES (1, N'20%', N'Navratri Special Offer 2026', N'Get 20% Flat OFF on Ceramic Coating & Car Detailing Services during Navratri Festival.', N'01-10-2026 00:00:00', N'25-10-2026 00:00:00', N'Valid: 01 Oct 2026 to 25 Oct 2026', NULL, 1);
 INSERT INTO [dbo].[Offers] ([OfferId], [DiscountPercentage], [OfferTitle], [OfferDescription], [StartDate], [EndDate], [ValidityText], [PromoCode], [IsActive]) VALUES (2, N'25%', N'Diwali Dhamaka Offer 2026', N'Get 25% Flat OFF on Paint Protection Film (PPF) & Full Body Polishing for Diwali.', N'01-11-2026 00:00:00', N'20-11-2026 00:00:00', N'Valid: 01 Nov 2026 to 20 Nov 2026', NULL, 1);
+INSERT INTO [dbo].[Offers] ([OfferId], [DiscountPercentage], [OfferTitle], [OfferDescription], [StartDate], [EndDate], [ValidityText], [PromoCode], [IsActive]) VALUES (3, N'20%', N'Winter Special Car Shield 2026', N'Protect your vehicle with 20% Flat OFF on Ceramic Coating, Underbody Anti-Rust & Winter Glass Defogging treatment.', N'15-11-2026 00:00:00', N'31-12-2026 00:00:00', N'Valid: 15 Nov 2026 to 31 Dec 2026', N'WINTER20', 1);
 SET IDENTITY_INSERT [dbo].[Offers] OFF;
 GO
 GO
